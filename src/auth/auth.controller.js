@@ -45,7 +45,7 @@ module.exports = {
       middlename: user.middlename,
       firstname: user.firstname,
       lastname: user.lastname,
-      image_path: user.image.path,
+      image: user.image,
       contact_no: user.contact_no,
       role: user.role,
     };

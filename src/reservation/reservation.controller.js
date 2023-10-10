@@ -47,7 +47,6 @@ module.exports = {
         $or: [
           { "instructor.lastname": { $regex: filter.search, $options: "i" } },
           { "instructor.fistname": { $regex: filter.search, $options: "i" } },
-          { "instructor._id": new mongoose.Types.ObjectId(filter.search) },
         ],
         dateFrom: filterDate,
       };
@@ -55,12 +54,15 @@ module.exports = {
       match = {
         dateFrom: filterDate,
       };
+    } else if (mongoose.isValidObjectId(filter.search)) {
+      match = {
+        "instructor._id": new mongoose.Types.ObjectId(filter.search),
+      };
     } else {
       match = {
         $or: [
           { "instructor.lastname": { $regex: filter.search, $options: "i" } },
           { "instructor.fistname": { $regex: filter.search, $options: "i" } },
-          { "instructor._id": new mongoose.Types.ObjectId(filter.search) },
         ],
       };
     }
@@ -87,15 +89,30 @@ module.exports = {
   put: TryCatch(async (req, res) => {
     const id = req.params.id;
     const data = req.body;
+    delete data._id;
+
     if (!mongoose.isValidObjectId(id))
       return res.status(500).json({ message: "Invalid Object Id" });
     const result = await Reservation.updateOne({ _id: id }, data);
-    console.log(result);
-    if (!result)
-      return res.status(500).json({ message: "Error updating data" });
+    if (!result || !result.acknowledged)
+      return res.status(500).json({ message: "Error updating reservation" });
 
     return res
       .status(200)
-      .json({ message: "Successfullu updated reservation" });
+      .json({ message: "Successfully updated reservation" });
+  }),
+
+  remove: TryCatch(async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.isValidObjectId(id))
+      return res.status(500).json({ message: "Invalid Object Id" });
+
+    const result = await Reservation.findByIdAndDelete(id);
+    if (!result)
+      return res.status(500).json({ message: "Error deleting reservation" });
+
+    return res
+      .status(200)
+      .json({ message: "Successfully deleted reservation" });
   }),
 };
