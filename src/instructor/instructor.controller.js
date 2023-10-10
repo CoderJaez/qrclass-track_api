@@ -28,7 +28,9 @@ module.exports = {
     Your default password is: ${data.password}`;
     mail(data.email, subject, message);
     if (!result) return res.status(500).json({ message: "Save failed" });
-    return res.status(200).json({ message: "New Instructor registered" });
+    return res
+      .status(200)
+      .json({ message: "New Instructor registered", data: result });
   }),
   put: TryCatch(async (req, res) => {
     const data = req.body;
