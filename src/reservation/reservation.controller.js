@@ -8,6 +8,7 @@ const { FindAll } = require("./reservation.service");
 module.exports = {
   post: TryCatch(async (req, res) => {
     const data = req.body;
+    console.log(data)
     let newResevation = new Reservation(data);
 
     newResevation = await newResevation.save();
@@ -114,5 +115,24 @@ module.exports = {
     return res
       .status(200)
       .json({ message: "Successfully deleted reservation" });
+  }),
+
+  setReservationStatus: TryCatch(async (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    console.log(data);
+
+    if (!mongoose.isValidObjectId(id))
+      return res.status(500).json({ message: "Invalid object Id" });
+
+    const result = await Reservation.updateOne({ _id: id }, data);
+    if (!result | !result.acknowledged)
+      return res
+        .status(500)
+        .json({ message: "Error updating reservation status" });
+
+    return res
+      .status(200)
+      .json({ message: `Successfully ${data.status} the reservation.` });
   }),
 };

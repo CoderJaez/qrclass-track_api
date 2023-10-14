@@ -1,5 +1,12 @@
 const { Router } = require("express");
-const { get, post, getOne, put, remove } = require("./reservation.controller");
+const {
+  get,
+  post,
+  getOne,
+  put,
+  remove,
+  setReservationStatus,
+} = require("./reservation.controller");
 
 const router = Router();
 router
@@ -7,6 +14,7 @@ router
   .get("/", get)
   .get("/:id", getOne)
   .put("/:id", put)
-  .delete("/:id", remove);
+  .delete("/:id", remove)
+  .put("/update-status/:id", setReservationStatus);
 
 module.exports = router;

@@ -8,7 +8,7 @@ const MONGO_URI = ENV === "production" ? PROD_MONGO_URI : DEV_MONGO_URI;
 const connection = mongoose
   .connect(MONGO_URI)
   .then(() => {
-    console.log("MongoDB connection is ready.");
+    console.log("MongoDB connection is ready. ", MONGO_URI);
   })
   .catch((err) => console.error("ERROR: ", err.message));
 
