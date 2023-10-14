@@ -5,6 +5,7 @@ const {
   getOne,
   put,
   remove,
+  occupyReservedRoom,
   setReservationStatus,
 } = require("./reservation.controller");
 
@@ -15,6 +16,7 @@ router
   .get("/:id", getOne)
   .put("/:id", put)
   .delete("/:id", remove)
-  .put("/update-status/:id", setReservationStatus);
+  .put("/update-status/:id", setReservationStatus)
+  .post("/occupy-reserved-room", occupyReservedRoom);
 
 module.exports = router;

@@ -4,11 +4,12 @@ const DataAccess = require("../DataAccess");
 const Reservation = require("./reservation.model");
 const service = require("./reservation.service");
 const { FindAll } = require("./reservation.service");
+const Occupancy = require("../occupancy/occupancy.model");
 
 module.exports = {
   post: TryCatch(async (req, res) => {
     const data = req.body;
-    console.log(data)
+    console.log(data);
     let newResevation = new Reservation(data);
 
     newResevation = await newResevation.save();
@@ -120,7 +121,6 @@ module.exports = {
   setReservationStatus: TryCatch(async (req, res) => {
     const id = req.params.id;
     const data = req.body;
-    console.log(data);
 
     if (!mongoose.isValidObjectId(id))
       return res.status(500).json({ message: "Invalid object Id" });
@@ -134,5 +134,33 @@ module.exports = {
     return res
       .status(200)
       .json({ message: `Successfully ${data.status} the reservation.` });
+  }),
+
+  occupyReservedRoom: TryCatch(async (req, res) => {
+    const data = req.body;
+    const occupiedRoom = await Occupancy.countDocuments({
+      instructor: data.instructor,
+      isVacant: false,
+    });
+    if (occupiedRoom > 0)
+      return res
+        .status(403)
+        .json({ message: "Your still occupied from the other room." });
+    const occupyRoomResult = await Occupancy.create({
+      instructor: data.instructor,
+      classroom: data.classroom,
+    });
+    if (!occupyRoomResult)
+      return res.status(500).json({ message: "Failed to occupy the room" });
+    const updateReserveStatus = await Reservation.updateOne(
+      { _id: data.reservationId },
+      { status: "occupied" },
+    );
+    if (!updateReserveStatus)
+      return res.status(500).json({ message: "Failed to occupy the room" });
+
+    return res
+      .status(200)
+      .json({ message: "Successfully occupied the reserved room." });
   }),
 };

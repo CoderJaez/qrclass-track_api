@@ -68,6 +68,7 @@ module.exports = {
       return res.status(500).json({ message: "Error saving occupancy" });
     return res.status(200).json({ message: "Successfully occupied classroom" });
   }),
+  
   put: TryCatch(async (req, res) => {
     const id = req.params.id;
     if (!mongoose.isValidObjectId(id))
