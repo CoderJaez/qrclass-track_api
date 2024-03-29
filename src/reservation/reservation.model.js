@@ -40,6 +40,7 @@ reservationSchema.pre("validate", async function (next) {
 
   const result = await this.constructor.findOne({
     classroom: classroom,
+    status: {$ne:"pending"},
     $or: [
       {
         dateFrom: { $lte: dateFrom },

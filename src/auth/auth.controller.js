@@ -49,7 +49,7 @@ module.exports = {
       contact_no: user.contact_no,
       role: user.role,
     };
-    // const session = await CreateOne(user._id);
+    const session = await CreateOne(user._id);
 
     const acces_token = await signJWT(data, "ACCESS_KEY", { expiresIn: "15m" });
     const refresh_token = await signJWT({ ...data }, "REFRESH_KEY", {

@@ -25,7 +25,7 @@ app.use(
       "*",
     ],
     exposedHeaders: ["X-Total-Count", "x-access-token", "x-refresh-token"],
-  }),
+  })
 );
 app.use(express.json());
 
@@ -36,7 +36,7 @@ const occupancyRouter = require("./occupancy/occupancy.route");
 const reservationRouter = require("./reservation/reservation.route");
 const authRouter = require("./auth/auth.route");
 const meRouter = require("./auth/me/me.route");
-
+const settingsRouter = require("./settings/settings.route");
 //Routes
 app.use(`${API_URL}classrooms`, authenticate, classroomRouter);
 app.use(`${API_URL}users`, authenticate, instructorRouter);
@@ -44,6 +44,10 @@ app.use(`${API_URL}occupancies`, authenticate, occupancyRouter);
 app.use(`${API_URL}reservations`, reservationRouter);
 app.use(`${API_URL}auth`, authRouter);
 app.use(`${API_URL}me`, authenticate, meRouter);
+app.use(`${API_URL}settings`, settingsRouter);
+app.use(`*`, (req, res) =>
+  res.status(404).json({ message: "Route not found." })
+);
 
 app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 
