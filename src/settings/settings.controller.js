@@ -91,7 +91,7 @@ module.exports = {
     let program;
 
     if (mongoose.isValidObjectId(id))
-      program = await Program.findOne({ _id: id });
+      program = await Program.findOne({ _id: id }).populate("courses");
     else
       program = await Program.find(
         search
@@ -99,7 +99,7 @@ module.exports = {
               $or: [{ name: { $regex: search, $options: "i" } }],
             }
           : {}
-      );
+      ).populate("courses");
 
     return res.status(200).json(program);
   }),
@@ -127,6 +127,11 @@ module.exports = {
     const data = req.body;
     let newCourse = new Course(data);
     newCourse = await newCourse.save();
+
+    const addCourse = await Program.updateOne(
+      { _id: data.program },
+      { $push: { courses: newCourse._id } }
+    );
 
     if (!newCourse)
       return res.status(400).json({ message: "Error saving course" });
