@@ -1,4 +1,3 @@
-const { post } = require("../reservation/reservation.controller");
 const TryCatch = require("../utils/tryCatch");
 const { Program, Course, SchoolYear } = require("./settings.model");
 const mongoose = require("mongoose");

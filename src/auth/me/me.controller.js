@@ -54,11 +54,7 @@ module.exports = {
   }),
   uploadImage: TryCatch(async (req, res) => {
     const id = req.params.id;
-    // const file = req;
-    // console.log(file);
-    // if (!file)
-    //   return res.status(400).send({ message: "No image in the request" });
-
+  
     if (!mongoose.isValidObjectId(id))
       return res.status(400).json({ message: "Invalid object Id." });
     let user = await DataAccess.FindOne(Instructor, { _id: id });
