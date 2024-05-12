@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const scheduleSchema = mongoose.Schema(
   {
-    sy: {
-      type: mongoose.Types.ObjectId,
-      ref: "SchoolYear",
-      required: [true, "{PATH} is required."],
-    },
     course: {
       type: mongoose.Types.ObjectId,
       ref: "Course",
@@ -66,10 +61,7 @@ scheduleSchema.pre("save", async function (next) {
   }
 });
 
-
-const syProgSchedSchema = mongoose.Schema({
-    
-})
-const Schedule = mongoose.model("Schedule", scheduleSchema)
+const syProgSchedSchema = mongoose.Schema({});
+const Schedule = mongoose.model("Schedule", scheduleSchema);
 
 module.exports = Schedule;

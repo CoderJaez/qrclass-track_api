@@ -82,7 +82,9 @@ module.exports = {
     if (!newProgram)
       return res.status(400).json({ message: "Error saving program" });
 
-    return res.status(201).json({ message: "Successfully creating program" });
+    return res
+      .status(201)
+      .json({ program: newProgram, message: "Successfully creating program" });
   }),
   getProgram: TryCatch(async (req, res) => {
     const id = req.params.id;
@@ -103,7 +105,7 @@ module.exports = {
     return res.status(200).json(program);
   }),
   putProgram: TryCatch(async (req, res) => {
-    const { data } = req.body;
+    const data = req.body;
     const id = req.params.id;
     if (!mongoose.isValidObjectId(id))
       return res.status(400).json({ message: "Invalid object id" });
@@ -134,7 +136,9 @@ module.exports = {
 
     if (!newCourse)
       return res.status(400).json({ message: "Error saving course" });
-    return res.status(200).json({ message: "Successfully saving course." });
+    return res
+      .status(200)
+      .json({ message: "Successfully saving course.", course: newCourse });
   }),
   getCourse: TryCatch(async (req, res) => {
     const { search } = req.query;
