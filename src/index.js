@@ -37,6 +37,7 @@ const reservationRouter = require("./reservation/reservation.route");
 const authRouter = require("./auth/auth.route");
 const meRouter = require("./auth/me/me.route");
 const settingsRouter = require("./settings/settings.route");
+const scheduleRouter = require("./scheduling/schedule.route");
 //Routes
 app.use(`${API_URL}classrooms`, authenticate, classroomRouter);
 app.use(`${API_URL}users`, authenticate, instructorRouter);
@@ -45,6 +46,7 @@ app.use(`${API_URL}reservations`, reservationRouter);
 app.use(`${API_URL}auth`, authRouter);
 app.use(`${API_URL}me`, authenticate, meRouter);
 app.use(`${API_URL}settings`, settingsRouter);
+app.use(`${API_URL}schedules`, scheduleRouter);
 app.use(`*`, (req, res) =>
   res.status(404).json({ message: "Route not found." })
 );

@@ -75,12 +75,17 @@ module.exports = {
   }),
 
   postProgram: TryCatch(async (req, res) => {
-    const data = req.body;
-    let newProgram = new Program(data);
+    const { code, sem, program, description } = req.body;
+    let newProgram = new Program({
+      code: code,
+      sem: sem,
+      program: program._id,
+      description: description,
+    });
     newProgram = await newProgram.save();
 
     if (!newProgram)
-      return res.status(400).json({ message: "Error saving program" });
+      return res.status(500).json({ message: "Error saving program" });
 
     return res
       .status(201)

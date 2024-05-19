@@ -23,6 +23,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === "CastError") {
     return res.status(500).json(err.message);
   }
+  console.error(err.message);
   if (ENV === "production")
     //default to 500 server error
     return res.status(500).json("Something went wrong.");
