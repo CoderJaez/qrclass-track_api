@@ -75,13 +75,9 @@ module.exports = {
   }),
 
   postProgram: TryCatch(async (req, res) => {
-    const { code, sem, program, description } = req.body;
-    let newProgram = new Program({
-      code: code,
-      sem: sem,
-      program: program._id,
-      description: description,
-    });
+   // const { code, sem, program, description } = req.body;
+    const data = req.body
+    let newProgram = new Program(data);
     newProgram = await newProgram.save();
 
     if (!newProgram)
